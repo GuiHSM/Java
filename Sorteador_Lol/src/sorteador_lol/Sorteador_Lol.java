@@ -5,6 +5,7 @@
 package sorteador_lol;
 
 import Frame.Tela;
+import javax.swing.UIManager;
 
 /**
  *
@@ -16,7 +17,7 @@ public class Sorteador_Lol {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new Tela().setVisible(true);
-    }
+            new Tela().setVisible(true);
+        }
     
 }
