@@ -1,0 +1,9 @@
+Nome Pseudonimo Idade Sexo Origem Atributo Raca Nivel XP PV_MAX PE DF DM ARM RES Iniciativa PV PE Radiacao Sanidade Fome
+Forca Agilidade Constituicao Destreza Inteligencia Percepcao Carisma Forca_de_Vontade Poder
+Periciais:
+Exemplo 50
+Equipamento:
+Boina: RES 15 ARM 15 PV 20 Passiva: 
++1 de PE fora de combate
+Habilidade
+ 

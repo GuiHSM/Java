@@ -48,6 +48,7 @@ public class Sortear extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jBSortear = new javax.swing.JButton();
         jCLane = new javax.swing.JComboBox<>();
+        jRBNotLane = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -100,63 +101,84 @@ public class Sortear extends javax.swing.JFrame {
                 jBSortearActionPerformed(evt);
             }
         });
-        getContentPane().add(jBSortear, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, -1, -1));
+        getContentPane().add(jBSortear, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 210, -1, -1));
 
         jCLane.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Top", "Jg", "Mid", "Adc", "Sup" }));
-        getContentPane().add(jCLane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 202, -1, -1));
+        getContentPane().add(jCLane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 213, -1, -1));
+
+        jRBNotLane.setText("Não Lane");
+        getContentPane().add(jRBNotLane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBSortearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSortearActionPerformed
-        int dificil=Integer.parseInt(jTDificil.getText());
-        int medio=Integer.parseInt(jTMedio.getText());
-        int facil=Integer.parseInt(jTFacil.getText());
-        int facilimo=Integer.parseInt(jTFacilimo.getText());
-        int troll=Integer.parseInt(jTroll.getText());
-        int seiJogar=Integer.parseInt(jTSeiJogar.getText());
-        int sum=dificil+medio+facil+facilimo+troll+seiJogar;
-        Random generator= new Random();
-        Double val=generator.nextDouble()*sum;
-        int grupo=0;
-        if(val<dificil){
-            grupo=1;
-        }else if(val<dificil+medio){
-            grupo=2;
-        }else if(val<dificil+medio+facil){
-            grupo=3;
-        }else if(val<dificil+medio+facil+facilimo){
-            grupo=4;
-        }else if(val<dificil+medio+facil+facilimo+troll){
-            grupo=6;
-        }else{
-            grupo=5;
-        }
-        int lane=jCLane.getSelectedIndex();
+                Random generator= new Random();
         int soma=0;
+        int lane=jCLane.getSelectedIndex();
         ArrayList<Campeao> campeoes=new ArrayList<>();
-        for(Campeao campeao : Tela.lista){
-            if(campeao.getStatus()[lane]==grupo){
-                soma+=Tela.tiers[campeao.getStatus()[lane+5]];
-                campeoes.add(campeao);
-            }
-        }
-        val=generator.nextDouble()*soma;
-        System.out.println("gerado: "+val);
-        String[] aux_Dificuldade={"Não Existe","Díficil","Médio","Fácil", "Fácilimo", "Sei Jogar", "Troll"};
-        System.out.println("grupo: "+aux_Dificuldade[grupo]);
-        for(Campeao campeao:campeoes){
-            System.out.println("Campeao1: "+campeao.getNome());
-            if(val<Tela.tiers[campeao.getStatus()[lane+5]]){
-                if(apr!=null){
-                    apr.dispose();
+        if(jRBNotLane.isSelected()){
+            for(Campeao campeao : Tela.lista){
+                if(campeao.getStatus()[lane]==0){
+                    soma+=1;
+                    campeoes.add(campeao);  
+                    System.out.println("Campeao: "+campeao.getNome());
                 }
-                apr=new Apresentador(campeao.getNome());
-                break;
             }
-            val-=Tela.tiers[campeao.getStatus()[lane+5]];
+            int val=(int) (generator.nextDouble()*soma);
+            if(apr!=null){
+                apr.dispose();
+            }
+            apr=new Apresentador(campeoes.get(val).getNome());
+            apr.setVisible(true);
+        }else{
+            int dificil=Integer.parseInt(jTDificil.getText());
+            int medio=Integer.parseInt(jTMedio.getText());
+            int facil=Integer.parseInt(jTFacil.getText());
+            int facilimo=Integer.parseInt(jTFacilimo.getText());
+            int troll=Integer.parseInt(jTroll.getText());
+            int seiJogar=Integer.parseInt(jTSeiJogar.getText());
+            int sum=dificil+medio+facil+facilimo+troll+seiJogar;
+            Double val=generator.nextDouble()*sum;
+            int grupo=0;
+            if(val<dificil){
+                grupo=1;
+            }else if(val<dificil+medio){
+                grupo=2;
+            }else if(val<dificil+medio+facil){
+                grupo=3;
+            }else if(val<dificil+medio+facil+facilimo){
+                grupo=4;
+            }else if(val<dificil+medio+facil+facilimo+troll){
+                grupo=6;
+            }else{
+                grupo=5;
+            }
+            for(Campeao campeao : Tela.lista){
+                if(campeao.getStatus()[lane]==grupo){
+                    soma+=Tela.tiers[campeao.getStatus()[lane+5]];
+                    campeoes.add(campeao);
+                }
+            }
+            val=generator.nextDouble()*soma;
+            System.out.println("gerado: "+val);
+            String[] aux_Dificuldade={"Não Existe","Díficil","Médio","Fácil", "Fácilimo", "Sei Jogar", "Troll",""};
+            System.out.println("grupo: "+aux_Dificuldade[grupo]);
+            for(Campeao campeao:campeoes){
+                System.out.println("Campeao: "+campeao.getNome());
+                if(val<Tela.tiers[campeao.getStatus()[lane+5]]){
+                    if(apr!=null){
+                        apr.dispose();
+                    }
+                    apr=new Apresentador(campeao.getNome());
+                    break;
+                }
+                val-=Tela.tiers[campeao.getStatus()[lane+5]];
+            }
+            apr.setVisible(true);
         }
-        apr.setVisible(true);
+        
+        
         
     }//GEN-LAST:event_jBSortearActionPerformed
 
@@ -171,6 +193,7 @@ public class Sortear extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JRadioButton jRBNotLane;
     private javax.swing.JTextField jTDificil;
     private javax.swing.JTextField jTFacil;
     private javax.swing.JTextField jTFacilimo;
